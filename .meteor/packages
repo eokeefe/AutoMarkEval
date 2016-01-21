@@ -21,3 +21,4 @@ insecure                # Allow all DB writes from clients (for prototyping)
 iron:router
 mrt:instagram-wrapper
 d3js:d3
+react
