@@ -11,8 +11,11 @@ var testCount = Instagram_db.find({
   }}).count();
 */
 
-// {}, {fields: {_id: 0}}
-/* NOT WORKING */
 Instagram_db.find({}, {fields: {created_time: 1}}).forEach(function (time) {
-  console.log(time);
+  /*
+  / Script to Go Here
+  /
+  / For each time entry increment the counter for the specific day on Tags_db.
+  / If data is not avalible create entry and incriment to 1.
+  */
 })
