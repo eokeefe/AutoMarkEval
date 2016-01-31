@@ -1,12 +1,3 @@
-/* Start Up Procedure */
-Meteor.startup(function () {
-  /* Rebuild DB on Server Start */
-  Tags_db.remove({}); // General Information collections
-  Instagram_db.remove({}); // Instagram collections
-  Instagram_info.remove({}); // Instagram information
-  Instagram_pag.remove({}); // Instagram pagination
-});
-
 /* Instagram Credentials */
 instagram = new Instagram.createClient('5166661f18554a699feaed3de378c3bf', 'bfebf48354df4928a0aab8efec13d906');
 Fiber = Npm.require('fibers');
