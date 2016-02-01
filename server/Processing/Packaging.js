@@ -1,21 +1,23 @@
-/* Example of unix time calls
-Current time in unix => moment().unix();
-Yesterday in unix => moment().subtract(1, 'day').unix();
-*/
+Meteor.startup(function () { Tags_db.remove({}); }); // FOR PROTOTYPING ONLY!
 
-/* Example of finding number of tags within 24hrs of now
-var testCount = Instagram_db.find({
-  'created_time': {
-    $gte: String(moment().subtract(1, 'day').unix()),
-    $lt: String(moment().unix())
-  }}).count();
-*/
+Instagram_db.find({}, {fields: {created_time: 1}}).forEach(function (doc) {
+  var date = moment.unix(doc.created_time).format("YYYYMMD");
+  var tags = Tags_db.find({'_id': date}).fetch();
 
-Instagram_db.find({}, {fields: {created_time: 1}}).forEach(function (time) {
   /*
-  / Script to Go Here
-  /
-  / For each time entry increment the counter for the specific day on Tags_db.
-  / If data is not avalible create entry and incriment to 1.
+  TODO: Current method to determin if to update or insert is not correct! 
   */
+
+  console.log(tags);
+  if(tags.Instagram = 0) {
+    console.log("attempting to insert new ID at: " + date)
+    Tags_db.insert({'_id': date, 'Instagram': 1}, function (err, id) {
+      if(err == null) console.log("Entry " + id + " was created.");
+    });
+  } else {
+    // console.log(tags);
+    console.log(tags.Instagram);
+    tags = tags.Instagram + 1;
+    Tags_db.update({'_id': date}, {'Instagram': tags});
+  }
 })
