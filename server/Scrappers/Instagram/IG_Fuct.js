@@ -11,20 +11,18 @@ instaINFO = function (tag) {
   instagram.tags.tag(tag, function (tag, err) {
     try {
       Fiber(function () {
-        var count = tag.media_count, name = tag.name; // Variables
-
         if (Instagram_info.find().count() === 0) { // Build Information
-          Instagram_info.insert({type: "info", media_count: count, name: name});
+          Instagram_info.insert({_id: tag.name, created_time: moment().unix(), media_count: tag.media_count});
         }
         else { // Update Information
           Instagram_info.update(
-            {type: "info"},
-            {type: "info", media_count: count, name: name});
+            {_id: tag.name},
+            {created_time: moment().unix(), media_count: tag.media_count});
         }
 
-        console.log("currently " + tag.media_count + " tags for " + tag.name);
+        console.log(tag.name + " has "+ tag.media_count + " tags as of: " + moment().format('MMMM Do, YYYY: h:mm:ssa'));
       }).run(); // Execute Fiber
-    } catch (err) { throw err; }; // Error management
+    } catch (err) { throw err; };
   });
 };
 
