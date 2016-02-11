@@ -3,26 +3,15 @@ instagram = new Instagram.createClient('5166661f18554a699feaed3de378c3bf', 'bfeb
 Fiber = Npm.require('fibers');
 
 /* Tag info */
-instaINFO = function (tag) {
-  /* Undefined Check */
-  if (tag === undefined) { console.log("tag not defined"); return }
+instaINFO = function (id) {
+  instagram.tags.tag(id, function (tag, err) {
+    Fiber(function () {
+      Interests.upsert( {_id: tag.name},
+        {instagram: {media_count: tag.media_count, created_time: moment().unix()}
+      });
 
-  /* Gather Instagram Information */
-  instagram.tags.tag(tag, function (tag, err) {
-    try {
-      Fiber(function () {
-        if (Instagram_info.find().count() === 0) { // Build Information
-          Instagram_info.insert({_id: tag.name, created_time: moment().unix(), media_count: tag.media_count});
-        }
-        else { // Update Information
-          Instagram_info.update(
-            {_id: tag.name},
-            {created_time: moment().unix(), media_count: tag.media_count});
-        }
-
-        console.log(tag.name + " has "+ tag.media_count + " tags as of " + moment().format('h:mm:ssa on MMMM Do, YYYY '));
-      }).run(); // Execute Fiber
-    } catch (err) { throw err; };
+      console.log(tag.name + " has "+ tag.media_count + " tags as of " + moment().format('h:mm:ssa on MMMM Do, YYYY.'));
+    }).run(); // Execute Fiber
   });
 };
 

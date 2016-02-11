@@ -25,5 +25,5 @@ Instagram_pag.find().observe({
   }
 });
 
-instaINFO(tag); // Collect information on tag
-instaARCHIVE(tag, '0'); // Collect arcived data
+// instaINFO(); // Collect information on tags
+// instaARCHIVE(tag, '0'); // Collect arcived data
