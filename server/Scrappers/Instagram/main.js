@@ -4,8 +4,14 @@ Meteor.startup(function () {
   Tags_db.remove({}); // General Information collections
   Instagram_db.remove({}); // Instagram collections
 
-  Interests.find().forEach(function (doc) { instaINFO(doc._id); });
+  Interests.find().forEach(function (doc) { instaINFO(doc._id);});
 });
+
+Interests.find().observe({
+  changed: function (doc) {
+    console.log(doc._id + " has "+ doc.instagram.media_count + " tags as of " + moment.unix(doc.instagram.update_time).format('h:mm:ssa on MMMM Do, YYYY.'));
+  }
+})
 
 // Instagram_pag.find().observe({
 //   added: function (doc) {

@@ -5,12 +5,14 @@ Fiber = Npm.require('fibers');
 /* Tag info */
 instaINFO = function (id) {
   instagram.tags.tag(id, function (tag, err) {
-    Fiber(function () {
+    Fiber(function () { // Start infomation fiber
       Interests.upsert( {_id: tag.name},
-        {instagram: {media_count: tag.media_count, created_time: moment().unix()}
+        {instagram: {
+          media_count: tag.media_count, // Current count on tag
+          update_time: moment().unix(), // Time infomation was last checked
+          back_log: true // Is database upto date?
+        }
       });
-
-      console.log(tag.name + " has "+ tag.media_count + " tags as of " + moment().format('h:mm:ssa on MMMM Do, YYYY.'));
     }).run(); // Execute Fiber
   });
 };
@@ -19,13 +21,18 @@ instaINFO = function (id) {
 instaARCHIVE = function (request, id) {
   instagram.tags.media(request, {max_tag_id: id}, function (tag, err, pag) {
     Fiber(function() {
-      for (i = 0; i < tag.length; ++i) {
-        Instagram_db.insert(tag);
-      };
-      console.log(Instagram_db.find().count());
+      _.each(tag, function(doc) {
+        Instagram_db.insert(doc); // TODO: Use instagram's id for _id.
+      })
+
 
       Interests.upsert({_id: request}, {
-        $set: {"instagram.pagi.min_id": pag.next_max_id, "instagram.pagi.max_id": pag.next_min_id}
+        $set: {
+          "instagram.pagi.min_id": pag.next_max_id,
+          "instagram.pagi.max_id": pag.next_min_id,
+          "instagram.pagi.first_date": tag[0].created_time,
+          "instagram.pagi.last_date": tag[tag.length-1].created_time
+        }
       });
     }).run(); // Execute Fiber
   });
