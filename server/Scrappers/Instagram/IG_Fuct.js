@@ -22,9 +22,10 @@ instaARCHIVE = function (request, id) {
   instagram.tags.media(request, {max_tag_id: id}, function (tag, err, pag) {
     Fiber(function() {
       _.each(tag, function(doc) {
-        Instagram_db.insert(doc); // TODO: Use instagram's id for _id.
+        doc._id = doc.id;
+        delete doc.id;
+        Instagram_db.insert(doc);
       })
-
 
       Interests.upsert({_id: request}, {
         $set: {

@@ -8,7 +8,7 @@ Meteor.startup(function () {
 });
 
 Interests.find().observe({
-  changed: function (doc) {
+  changed: function (doc) { // TODO: Only call when update_time or media_count is changed
     console.log(doc._id + " has "+ doc.instagram.media_count + " tags as of " + moment.unix(doc.instagram.update_time).format('h:mm:ssa on MMMM Do, YYYY.'));
   }
 })
