@@ -10,8 +10,11 @@ instaINFO = function (id) {
         {instagram: {
           media_count: tag.media_count, // Current count on tag
           update_time: moment().unix(), // Time infomation was last checked
-          back_log: true // Is database upto date?
+          back_log: true, // Is database upto date?
         }
+      }, function (err) { // TODO: Effectively handle error
+        var doc = Interests.find({_id: id}).fetch();
+        console.log(doc[0]._id + " has "+ doc[0].instagram.media_count + " tags as of " + moment.unix(doc[0].instagram.update_time).format('h:mm:ssa on MMMM Do, YYYY.'));
       });
     }).run(); // Execute Fiber
   });
@@ -19,15 +22,19 @@ instaINFO = function (id) {
 
 /* Instagram to DB */
 instaARCHIVE = function (request, id) {
+  if (id === undefined) { pag_id = 0}
+
   instagram.tags.media(request, {max_tag_id: id}, function (tag, err, pag) {
     Fiber(function() {
-      _.each(tag, function(doc) {
+      _.each(tag, function(doc) { // TODO: There should be a better way to do this...
         doc._id = doc.id;
         delete doc.id;
-        Instagram_db.insert(doc);
+        Instagram_db.insert(doc, function (err, id) {
+          if (err !== null) { throw err; }
+        });
       })
 
-      Interests.upsert({_id: request}, {
+      Interests.update({_id: request}, {
         $set: {
           "instagram.pagi.min_id": pag.next_max_id,
           "instagram.pagi.max_id": pag.next_min_id,
