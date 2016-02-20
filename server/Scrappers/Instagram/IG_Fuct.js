@@ -22,16 +22,12 @@ instaINFO = function (id) {
 
 /* Instagram to DB */
 instaARCHIVE = function (request, id) {
-  if (id === undefined) { pag_id = 0}
+  if (id === undefined) { pag_id = 0 }
 
   instagram.tags.media(request, {max_tag_id: id}, function (tag, err, pag) {
     Fiber(function() {
-      _.each(tag, function(doc) { // TODO: There should be a better way to do this...
-        doc._id = doc.id;
-        delete doc.id;
-        Instagram_db.insert(doc, function (err, id) {
-          if (err !== null) { throw err; }
-        });
+      _.each(tag, function(doc) {
+        Instagram_db.upsert({_id: request}, { $set: { hits: doc } });
       })
 
       Interests.update({_id: request}, {
