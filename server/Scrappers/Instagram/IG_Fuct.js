@@ -30,12 +30,13 @@ instaARCHIVE = function (request, id) {
         Instagram_db.upsert({_id: request}, { $set: { hits: doc } });
       })
 
-      Interests.update({_id: request}, {
+      // Interests.update({_id: request}, {
+      Instagram_db.update({_id: request}, {
         $set: {
-          "instagram.pagi.min_id": pag.next_max_id,
-          "instagram.pagi.max_id": pag.next_min_id,
-          "instagram.pagi.first_date": tag[0].created_time,
-          "instagram.pagi.last_date": tag[tag.length-1].created_time
+          "pagi.min_id": pag.next_max_id,
+          "pagi.max_id": pag.next_min_id,
+          "pagi.first_date": tag[0].created_time,
+          "pagi.last_date": tag[tag.length-1].created_time
         }
       });
     }).run(); // Execute Fiber
