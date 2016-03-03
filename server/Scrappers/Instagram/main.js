@@ -7,8 +7,12 @@ Meteor.startup(function () {
   Interests.find().forEach(function (doc) { instaINFO(doc._id); });
 });
 
+var next_id = 0;
+
 Meteor.setInterval(function () {
   Interests.find().forEach(function (doc) {
-    instaARCHIVE(doc._id, doc.next_min_id); // I think we want min here...
+    // if (doc.Instagram.pagi != undefined) { next_id = doc.instagram.pagi.min_id; }
+    // console.log(doc.Instagram.pagi);
+    // instaARCHIVE(doc._id, doc.instagram.pagi.min_id); // I think we want min here...
   });
-}, 10000);
+}, 3000);
