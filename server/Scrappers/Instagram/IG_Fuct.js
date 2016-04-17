@@ -51,14 +51,19 @@
 //   return instagram;
 // }();
 
+import { Instagram } from 'Instagram'
+import { Fibers } from 'Fibers'
+import { Moment } from 'Moment'
+
 /* Instagram Credentials */
-instagram = new Instagram.createClient('5166661f18554a699feaed3de378c3bf', 'bfebf48354df4928a0aab8efec13d906');
-var Fiber = Npm.require('fibers');
+var instagram = new require('instagram').createClient('5166661f18554a699feaed3de378c3bf', 'bfebf48354df4928a0aab8efec13d906');
+var fiber = require('fibers');
+var moment = require('moment');
 
 /* Tag info */
 instaINFO = function (id) {
   instagram.tags.tag(id, function (tag, err) {
-    Fiber(function () { // Start infomation fiber
+    fiber(function () { // Start infomation fiber
       Interests.upsert( {_id: tag.name},
         {instagram: {
           media_count: tag.media_count, // Current count on tag
@@ -78,7 +83,7 @@ instaARCHIVE = function (request, id) {
   if (id === undefined) { pag_id = 0 }
 
   instagram.tags.media(request, {max_tag_id: id}, function (tag, err, pag) {
-    Fiber(function() {
+    fiber(function() {
       _.each(tag, function(doc) {
         Instagram_db.upsert({_id: request}, { $set: { hits: doc } });
       })

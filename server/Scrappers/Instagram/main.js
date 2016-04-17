@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor'
+
 /* Start Up Procedure */
 Meteor.startup(function () {
   /* Rebuild DB on Server Start */
