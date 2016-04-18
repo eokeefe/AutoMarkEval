@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor'
+import '../../../imports/startup/shared';
 
 /* Start Up Procedure */
 Meteor.startup(function () {

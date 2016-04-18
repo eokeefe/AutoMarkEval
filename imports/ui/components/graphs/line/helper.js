@@ -1,4 +1,7 @@
 import { D3 } from 'D3'
+import { Template } from 'meteor/templating'
+import '../../../startup/shared';
+import './multiLine.html'
 
 /* Helpers */
 if (Meteor.isClient) {
