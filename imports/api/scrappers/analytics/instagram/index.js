@@ -54,7 +54,7 @@
 import { Instagram } from 'Instagram'
 import { Fibers } from 'Fibers'
 import { Moment } from 'Moment'
-import '../../../imports/startup/server';
+import '../../../../startup/server';
 
 /* Instagram Credentials */
 var instagram = new require('instagram').createClient('5166661f18554a699feaed3de378c3bf', 'bfebf48354df4928a0aab8efec13d906');
@@ -100,3 +100,5 @@ instaARCHIVE = function (request, id) {
     }).run(); // Execute Fiber
   });
 };
+
+export { instaINFO, instaARCHIVE };
