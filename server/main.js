@@ -10,12 +10,15 @@ Meteor.startup(function () {
   Instagram_db.remove({}); // Instagram collections
 
   // FOR TESTING -- To pull out mysterious _id's..
-  // Interests.remove({});
-  // Interests.insert({_id: 'porsche'});
+  Interests.remove({});
+  Interests.insert({_id: 'porsche'});
   // Interests.insert({_id: 'ferrari'});
   // Interests.insert({_id: 'ducati'});
 
-  Interests.find().forEach(function (doc) { instagram.info(doc._id); });
+  Interests.find().forEach(function (doc) {
+    instagram.info(doc._id);
+    console.log(doc._id);
+  });
 });
 
 // var next_id = 0;

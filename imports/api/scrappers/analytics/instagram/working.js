@@ -5,7 +5,7 @@ import { Moment } from 'Moment' // npm Moment
 import '../../../../startup/server'; // server Startup
 
 /* Instagram Credentials */
-var instagram = new require('instagram').createClient('5166661f18554a699feaed3de378c3bf', 'bfebf48354df4928a0aab8efec13d906');
+var instagram = new require('instagram').createClient('5c8f6f1097ae407a878b6797a3773d33', 'eb30f497709343cebfc4c636ffac3265');
 var fiber = require('fibers');
 var moment = require('moment');
 
